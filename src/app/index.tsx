@@ -27,13 +27,15 @@ export default function Index() {
   return (
     <View style={styles.screen}>
       <View style={styles.container}>
-        <Image
-          source={require("@/assets/images/logotransparente.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        />
-        <Text style={styles.titulo}>Login</Text>
-        <Text style={styles.subtitulo}>Aula 17/08/2026</Text>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require("@/assets/images/logotransparente.png")}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+        </View>
+        <Text style={styles.titulo}>Bem-vindo</Text>
+        <Text style={styles.subtitulo}>Acesse sua conta</Text>
       </View>
 
       <View style={styles.main}>
@@ -41,7 +43,7 @@ export default function Index() {
         <TextInput
           style={styles.input}
           placeholder="Informe o login/email!"
-          placeholderTextColor="#5A8F8C"
+          placeholderTextColor="#94A3B8"
           value={usuario}
           onChangeText={setUsuario}
           autoCapitalize="none"
@@ -52,7 +54,7 @@ export default function Index() {
         <TextInput
           style={styles.input}
           placeholder="Informe a senha!"
-          placeholderTextColor="#5A8F8C"
+          placeholderTextColor="#94A3B8"
           value={senha}
           secureTextEntry
           onChangeText={setSenha}
@@ -70,7 +72,7 @@ export default function Index() {
         <Button
           onPress={onClickAcessar}
           title="Acessar"
-          color="#0F2C59"
+          color="#2563EB"
         />
       </View>
     </View>
@@ -81,57 +83,70 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#F0FAF9",
+    backgroundColor: "#F8FAFC",
   },
   container: {
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 18,
+    paddingVertical: 24,
     paddingHorizontal: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#C8E6C9",
     marginBottom: 12,
+  },
+  logoContainer: {
+    width: 110,
+    height: 110,
+    borderRadius: 28,
+    backgroundColor: "#FFF7ED",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 18,
+    shadowColor: "#2563EB",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.18,
+    shadowRadius: 16,
+    elevation: 6,
   },
   logo: {
-    width: 88,
-    height: 88,
-    marginBottom: 12,
+    width: 90,
+    height: 90,
   },
   titulo: {
-    color: "#0F2C59",
+    color: "#0F172A",
     fontSize: 30,
-    fontWeight: "700",
+    fontWeight: "800",
   },
   subtitulo: {
-    color: "#1B5E20",
+    color: "#475569",
     fontSize: 16,
-    fontWeight: "700",
-    marginTop: 4,
+    fontWeight: "600",
+    marginTop: 6,
   },
   main: {
     backgroundColor: "#FFFFFF",
-    borderRadius: 18,
+    borderRadius: 22,
     padding: 18,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: "#0F172A",
+    shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 3,
+    shadowRadius: 18,
+    elevation: 4,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
   },
   input: {
     width: "100%",
-    minHeight: 48,
-    backgroundColor: "#E0F2F1",
+    minHeight: 50,
+    backgroundColor: "#F8FAFC",
     borderWidth: 1,
-    borderColor: "#A3C4BC",
+    borderColor: "#E2E8F0",
     marginBottom: 16,
     borderRadius: 12,
-    paddingHorizontal: 12,
-    color: "#0F2C59",
+    paddingHorizontal: 14,
+    color: "#0F172A",
   },
   inputText: {
-    color: "#0F2C59",
-    fontWeight: "600",
+    color: "#1E293B",
+    fontWeight: "700",
     fontSize: 14,
     width: "100%",
     marginBottom: 8,
@@ -142,14 +157,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   helperText: {
-    color: "#333333",
+    color: "#475569",
     fontSize: 14,
     marginBottom: 18,
     textAlign: "center",
   },
   textoLink: {
     fontSize: 15,
-    color: "#00C9A7",
+    color: "#2563EB",
     fontWeight: "700",
   },
 });

@@ -1,7 +1,7 @@
 import { useRouter } from "expo-router";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Alert,
   Image,
@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { AuthContext } from "../utils/authContext";
 
 type TabKey = "inicio" | "mapa" | "carteira";
 
@@ -57,6 +58,7 @@ const tabs: Array<{
 
 export default function DashBoard() {
   const router = useRouter();
+  const auth = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState<TabKey>("inicio");
   const [search, setSearch] = useState("");
   const [balance, setBalance] = useState(42.5);
@@ -83,7 +85,8 @@ export default function DashBoard() {
   ]);
 
   function logout() {
-    router.navigate("/");
+    auth.logOut();
+    router.replace("/");
   }
 
   function searchLine() {
@@ -457,9 +460,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 16,
     paddingBottom: 8,
-    backgroundColor: palette.card,
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: palette.border,
+    borderBottomColor: "#E5E7EB",
   },
   logo: {
     width: 120,
