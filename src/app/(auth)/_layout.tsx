@@ -5,6 +5,11 @@ import { AuthContext } from "../utils/authContext";
 
 export default function AuthLayout() {
   const auth = useContext(AuthContext);
+
+  if (auth.isReding) {
+    return;
+  }
+
   if (!auth.isLoggedIn) {
     return <Redirect href={"/login"} />;
   }

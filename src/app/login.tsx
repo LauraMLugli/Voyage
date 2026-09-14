@@ -15,11 +15,28 @@ export default function Login() {
   const router = useRouter();
   const [senha, setSenha] = useState<string>();
   const [usuario, setUsuario] = useState<string>();
+  const [focusLogin, setFocusLogin] = useState<boolean>(false);
+  const [focusSenha, setFocusSenha] = useState<boolean>(false);
+  const [msgError, setMsgError] = useState<string | null>(null);
   const auth = useContext(AuthContext);
 
-  function onClickAcessar() {
-    if (usuario == "teste@test.com" && senha == "123") {
-      auth.logIn();
+  async function onClickAcessar() {
+    if (!usuario) {
+      setMsgError("Login e obrigatorio !");
+      //Alert.alert("Login e obrigatorio !");
+      // setFocusLogin(true);
+      // setFocusSenha(false);
+      return;
+    }
+    if (!senha) {
+      //Alert.alert("senha e obrigatorio !");
+      setMsgError("senha e obrigatorio !");
+      // setFocusLogin(false);
+      // setFocusSenha(true);
+      return;
+    }
+    const autorizado = await auth.logIn(usuario, senha);
+    if (autorizado) {
       router.navigate("/");
     } else {
       Alert.alert("Usuário ou Senha invalido ...");
@@ -42,7 +59,9 @@ export default function Login() {
           placeholder="Informe o login/email!"
           onChangeText={(value) => {
             setUsuario(value);
+            setMsgError(null);
           }}
+          autoFocus={focusLogin}
         />
 
         <Text style={styles.inputText}>senha:</Text>
@@ -52,9 +71,13 @@ export default function Login() {
           secureTextEntry
           onChangeText={(e) => {
             setSenha(e);
+            setMsgError(null);
           }}
+          autoFocus={focusSenha}
         />
+        {msgError && <Text style={styles.textError}> {msgError}</Text>}
       </View>
+
       <View style={styles.footer}>
         <Text style={styles.inputText}>
           Não tem login,{" "}
@@ -115,5 +138,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 10,
+  },
+  textError: {
+    color: "#f10a0a",
+    fontWeight: "700",
+    fontSize: 14,
+    width: "100%",
+    textAlign: "center",
+    marginBottom: 5,
+    marginTop: 5,
   },
 });
