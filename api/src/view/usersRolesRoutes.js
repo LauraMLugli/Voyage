@@ -1,7 +1,7 @@
 import { Router } from "express";
-import * as mycontroller from "../controller/usersController.js"
+import * as mycontroller from "../controller/usersRolerController.js"
 
-const pointName = mycontroller.getTableName() || 'usersroles';
+const pointName = mycontroller.getTableName() || 'users';
 
 const endPoint = `/${pointName}`;
 

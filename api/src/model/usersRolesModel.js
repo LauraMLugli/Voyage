@@ -1,7 +1,7 @@
 import { db } from "../databases/DatabaseContext.js";
 import * as sqlutils from "../utils/sqlTextos.js"
 
-export const tableName = "users";
+export const tableName = "usersroles";
 
 export async function Get ( req, res)  {
     try {

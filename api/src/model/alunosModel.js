@@ -1,7 +1,7 @@
 import { db } from "../databases/DatabaseContext.js";
 import * as sqlutils from "../utils/sqlTextos.js"
 
-export const tableName = "users";
+export const tableName = "alunos";
 
 export async function Get ( req, res)  {
     try {
@@ -21,22 +21,6 @@ export async function GetById(id){
             `SELECT * FROM ${tableName} WHERE id = ? ORDER BY id `,
             [id]
         );
-        return {"message":"Success","data":results[0]} ;
-    } catch (error) {
-       return {"message": "error", "Error": error.message} 
-    }
-}
-
-export async function GetByEmail(email){
-    try {
-        
-        const results = await db.execute(
-            `SELECT * FROM ${tableName} WHERE login = ?`,
-            [email]
-        );
-        if (results[0].length === 0) {
-          return {"message": "error", "Error": "resgistro não localizado"} 
-        }            
         return {"message":"Success","data":results[0]} ;
     } catch (error) {
        return {"message": "error", "Error": error.message} 
@@ -63,7 +47,7 @@ export async function Post( data ){
         const sqlFields = sqlutils.gerar_sqlFields();
         const sqlParms = sqlutils.gerar_sqlParams();
         const sqlValuesParms = sqlutils.listParms();  
-        const sqlTexto = `INSERT INTO ${tableName} ( ${sqlFields} ) VALUES ( ${sqlParms} )`
+        const sqlTexto = `INSERT INTO ${tableName} ( ${sqlFields} )  VALUES ( ${sqlParms} )`
         console.log( sqlTexto);
 
         const results = await db.execute( sqlTexto,  sqlValuesParms

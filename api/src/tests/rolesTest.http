@@ -1,6 +1,6 @@
 @host = http://localhost
 @port = 3500
-@endpoint = users
+@endpoint = roles
 
 @url = {{host}}:{{port}}/{{endpoint}} 
 
@@ -21,10 +21,7 @@ POST  {{url}}
 Content-Type: application/json; charset=utf-8
 
 {
-      "name": "prova 022",
-      "password": "022",
-      "login" : "provara022@fatec.com"
-      
+      "role": "Admin"
     }
 
 ###
