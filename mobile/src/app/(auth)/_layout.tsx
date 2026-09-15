@@ -17,19 +17,22 @@ export default function AuthLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
+          tabBarActiveTintColor: "#286b43",
+          tabBarInactiveTintColor: "#91a095",
+          tabBarStyle: { backgroundColor: "#ffffff", borderTopColor: "#e5ebe2" },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "home",
+          title: "Início",
           tabBarIcon: () => (
-            <MaterialIcons name="home" size={24} color={"red"} />
+            <MaterialIcons name="home" size={24} color={"#286b43"} />
           ),
         }}
       />
-      <Tabs.Screen name="listaClientes" />
-      <Tabs.Screen name="perfil" />
+      <Tabs.Screen name="listaClientes" options={{ title: "Mapa", tabBarIcon: ({ color }) => <MaterialIcons name="map" size={24} color={color} /> }} />
+      <Tabs.Screen name="perfil" options={{ title: "Carteira", tabBarIcon: ({ color }) => <MaterialIcons name="account-balance-wallet" size={24} color={color} /> }} />
     </Tabs>
   );
 }

@@ -12,27 +12,32 @@ export default function DashBoard() {
 
   function logout() {
     auth.logOut();
-    route.navigate("/");
+    route.replace("/login");
   }
   function openCadastros() {
-    console.log("novo registro");
-    Alert.alert("sucesso ao inserir novo registro ");
+    route.navigate("/register");
   }
   function newRegister() {
     route.navigate("/register");
   }
   function deleteRegister() {
-    console.log("apagando registro");
-    Alert.alert("apagando registro atual");
+    Alert.alert(
+      "Excluir cadastro",
+      "Deseja realmente sair e remover a sessão atual deste dispositivo?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        { text: "Confirmar", style: "destructive", onPress: logout },
+      ],
+    );
   }
 
   return (
     <View style={{ flex: 1, padding: 5, gap: 5, backgroundColor: "#fff" }}>
       <View style={styles.container}>
-        <Image source={require("@/assets/images/favicon.png")} />
+        <Image source={require("@/assets/images/logotransparente.png")} style={styles.logo} />
         <Text style={styles.titulo}>Dashboard</Text>
         <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-          Aula 17/08/2026
+          Olá, {auth.user?.name || "viajante"}
         </Text>
       </View>
       <View style={styles.main}>
@@ -41,36 +46,27 @@ export default function DashBoard() {
       <View style={styles.footer}>
         <ButtonFatec
           text={"sair"}
-          action={() => {
-            logout();
-          }}
+          action={logout}
           icon={MaterialCommunityIcons}
           iconName={"exit-run"}
         />
         <ButtonFatec
           text={"cadastros"}
-          action={() => {
-            openCadastros();
-          }}
+          action={openCadastros}
           icon={MaterialCommunityIcons}
-          iconName={"exit-run"}
+          iconName={"account-plus"}
         />
         <ButtonFatec
           text={"Novo"}
-          action={() => {
-            newRegister();
-          }}
+          action={newRegister}
           icon={MaterialCommunityIcons}
-          iconName={"exit-run"}
+          iconName={"plus-circle"}
         />
-
         <ButtonFatec
           text={"Excluir"}
-          action={() => {
-            deleteRegister();
-          }}
+          action={deleteRegister}
           icon={MaterialIcons}
-          iconName={"arrow-back-ios-new"}
+          iconName={"delete-outline"}
         />
       </View>
     </View>
@@ -78,6 +74,11 @@ export default function DashBoard() {
 }
 
 const styles = StyleSheet.create({
+  logo: {
+    width: 118,
+    height: 118,
+    resizeMode: "contain",
+  },
   container: {
     flex: 1 / 3,
     alignItems: "center",
@@ -88,7 +89,6 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 600,
   },
-
   main: {
     flex: 1 / 3,
     alignItems: "center",
@@ -112,8 +112,6 @@ const styles = StyleSheet.create({
     flex: 1 / 3,
     alignItems: "center",
     justifyContent: "center",
-
     gap: 10,
-    // backgroundColor: "lightgreen",
   },
 });

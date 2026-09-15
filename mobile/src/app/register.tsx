@@ -1,6 +1,7 @@
 import { Link, useRouter } from "expo-router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
   Button,
   Image,
@@ -9,42 +10,57 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { AuthContext } from "./utils/authContext";
 
 export default function Register() {
   const router = useRouter();
+  const auth = useContext(AuthContext);
   const [namefull, setNamefull] = useState<string>();
   const [senha, setSenha] = useState<string>();
   const [senha2, setSenha2] = useState<string>();
   const [usuario, setUsuario] = useState<string>();
+  const [loading, setLoading] = useState(false);
 
-  function onClickAcessar() {
-    if (namefull == "") {
+  async function onClickAcessar() {
+    if (!namefull) {
       Alert.alert(
         "Campo Obrigatorio não preenchido! \n O nome completo esta em Branco \n Por favor providenciar o preenchimento ...",
       );
       return;
     }
-    if (usuario === "") {
+    if (!usuario) {
       Alert.alert(
-        "As senhas informada são Diferente! \n Por favor providencia e a correção ...",
+        "Campo Obrigatorio não preenchido! \n O usuário esta em Branco \n Por favor providenciar o preenchimento ...",
       );
+      return;
     }
-    if (senha !== senha2) {
+    if (!senha || senha !== senha2) {
       Alert.alert(
         "As senhas informada são Diferente! \n Por favor providencia e a correção ...",
       );
       return;
     }
-    router.navigate("/login");
+
+    setLoading(true);
+    try {
+      const result = await auth.register(namefull, usuario, senha);
+      if (!result.ok) {
+        Alert.alert(result.message);
+        return;
+      }
+      Alert.alert("Cadastro realizado!", "Bem-vindo(a) ao Voyage.");
+      router.navigate("/");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <View style={{ flex: 1, padding: 5, gap: 5, backgroundColor: "#fff" }}>
       <View style={styles.container}>
-        <Image source={require("@/assets/images/favicon.png")} />
+        <Image source={require("@/assets/images/logotransparente.png")} style={styles.logo} />
         <Text style={styles.titulo}>Register</Text>
         <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-          Aula 31/08/2026
         </Text>
       </View>
       <View style={styles.main}>
@@ -52,18 +68,15 @@ export default function Register() {
         <TextInput
           style={styles.input}
           placeholder="Informe o Nome Completo!"
-          onChangeText={(value) => {
-            setNamefull(value);
-          }}
+          onChangeText={(value) => setNamefull(value)}
         />
 
         <Text style={styles.inputText}>usuário:</Text>
         <TextInput
           style={styles.input}
           placeholder="Informe o login!"
-          onChangeText={(value) => {
-            setUsuario(value);
-          }}
+          autoCapitalize="none"
+          onChangeText={(value) => setUsuario(value)}
         />
 
         <Text style={styles.inputText}>senha:</Text>
@@ -71,18 +84,14 @@ export default function Register() {
           style={styles.input}
           placeholder="informe a senha!"
           secureTextEntry
-          onChangeText={(e) => {
-            setSenha(e);
-          }}
+          onChangeText={(e) => setSenha(e)}
         />
         <Text style={styles.inputText}>Repetir senha:</Text>
         <TextInput
           style={styles.input}
           placeholder="repeti a senha!"
           secureTextEntry
-          onChangeText={(e) => {
-            setSenha2(e);
-          }}
+          onChangeText={(e) => setSenha2(e)}
         />
       </View>
       <View style={styles.footer}>
@@ -92,18 +101,22 @@ export default function Register() {
             <Text style={styles.textoLink}>façao o login!</Text>{" "}
           </Link>
         </Text>
-        <Button
-          onPress={() => {
-            onClickAcessar();
-          }}
-          title="Registrar"
-        />
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <Button onPress={onClickAcessar} title="Registrar" />
+        )}
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  logo: {
+    width: 118,
+    height: 118,
+    resizeMode: "contain",
+  },
   container: {
     flex: 1 / 3,
     alignItems: "center",

@@ -1,6 +1,7 @@
 import { Link, useRouter } from "expo-router";
 import { useContext, useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
   Button,
   Image,
@@ -13,43 +14,42 @@ import { AuthContext } from "./utils/authContext";
 
 export default function Login() {
   const router = useRouter();
-  const [senha, setSenha] = useState<string>();
-  const [usuario, setUsuario] = useState<string>();
+  const [senha, setSenha] = useState("123456");
+  const [usuario, setUsuario] = useState("demo@voyage.com");
   const [focusLogin, setFocusLogin] = useState<boolean>(false);
   const [focusSenha, setFocusSenha] = useState<boolean>(false);
   const [msgError, setMsgError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const auth = useContext(AuthContext);
 
   async function onClickAcessar() {
     if (!usuario) {
       setMsgError("Login e obrigatorio !");
-      //Alert.alert("Login e obrigatorio !");
-      // setFocusLogin(true);
-      // setFocusSenha(false);
       return;
     }
     if (!senha) {
-      //Alert.alert("senha e obrigatorio !");
       setMsgError("senha e obrigatorio !");
-      // setFocusLogin(false);
-      // setFocusSenha(true);
       return;
     }
-    const autorizado = await auth.logIn(usuario, senha);
-    if (autorizado) {
-      router.navigate("/");
-    } else {
-      Alert.alert("Usuário ou Senha invalido ...");
+    setLoading(true);
+    try {
+      const autorizado = await auth.logIn(usuario, senha);
+      if (autorizado) {
+        router.navigate("/");
+      } else {
+        Alert.alert("Usuário ou Senha invalido ...");
+      }
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
     <View style={{ flex: 1, padding: 5, gap: 5, backgroundColor: "#fff" }}>
       <View style={styles.container}>
-        <Image source={require("@/assets/images/favicon.png")} />
+        <Image source={require("@/assets/images/logotransparente.png")} style={styles.logo} />
         <Text style={styles.titulo}>Login</Text>
         <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-          Aula 14/09/2026
         </Text>
       </View>
       <View style={styles.main}>
@@ -62,6 +62,7 @@ export default function Login() {
             setMsgError(null);
           }}
           autoFocus={focusLogin}
+          autoCapitalize="none"
         />
 
         <Text style={styles.inputText}>senha:</Text>
@@ -79,24 +80,31 @@ export default function Login() {
       </View>
 
       <View style={styles.footer}>
+        <Text style={styles.demoCredentials}>
+          Exemplo: demo@voyage.com | senha: 123456
+        </Text>
         <Text style={styles.inputText}>
           Não tem login,{" "}
           <Link href={"/register"}>
             <Text style={styles.textoLink}>faça o cadastro aqui!</Text>{" "}
           </Link>
         </Text>
-        <Button
-          onPress={() => {
-            onClickAcessar();
-          }}
-          title="Acessar"
-        />
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <Button onPress={onClickAcessar} title="Acessar" />
+        )}
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  logo: {
+    width: 118,
+    height: 118,
+    resizeMode: "contain",
+  },
   container: {
     flex: 1 / 3,
     alignItems: "center",
@@ -147,5 +155,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 5,
     marginTop: 5,
+  },
+  demoCredentials: {
+    color: "#5f7d45",
+    fontSize: 12,
+    marginBottom: 12,
+    textAlign: "center",
   },
 });
